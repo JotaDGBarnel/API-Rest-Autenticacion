@@ -38,7 +38,7 @@ class Rol(db.Model):
 
 
 # Creacion tabla Permiso
-class Permiso(db.model):
+class Permiso(db.Model):
     id_Permiso = db.Column(db.Integer, primary_key=True)
     Nombre_Permiso = db.Column(db.String(40))
     Descripcion_Permiso = db.Column(db.String(100))
@@ -49,6 +49,25 @@ class Permiso(db.model):
         self.Nombre_Permiso = Nombre_Permiso
         self.Descripcion_Permiso = Descripcion_Permiso
         self.Fecha_Creacion = Fecha_Creacion
+
+class Rol_Permiso(db.Model):
+    id_Rol_FK = db.Column(db.Integer, db.ForeignKey("rol.id_Rol"), primary_key=True)
+    id_Permiso_FK = db.Column(db.Integer, db.ForeignKey("permiso.id_Permiso"), primary_key=True)
+
+    # definimos el constructor para cuando se llame la tabla
+    def _init_(self, id_Rol_FK, id_Permiso_FK):
+        self.id_Rol_FK = id_Rol_FK
+        self.id_Permiso_FK = id_Permiso_FK
+
+# creacion de la tabla Rol_Usuario
+class Rol_Usuario(db.Model):
+    id_Usuario_FK = db.Column(db.Integer, db.ForeignKey("usuario.id_Usuario"), primary_key=True)
+    id_Rol_FK = db.Column(db.Integer, db.ForeignKey("rol.id_Rol"), primary_key=True)
+
+    # definimos el constructor para cuando se llame la tabla
+    def _init_(self, id_Usuario_FK, id_Rol_FK):
+        self.id_Usuario_FK = id_Usuario_FK
+        self.id_Rol_FK = id_Rol_FK
 
 with app.app_context():
     db.create_all()

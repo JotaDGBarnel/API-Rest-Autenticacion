@@ -10,7 +10,7 @@ class UserSchema(ma.Schema):
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
-@user.route('/user', methods=['Post'])
+@user.route('/userC', methods=['Post'])
 def create_user():
 
   nom = request.json['nom']
@@ -24,18 +24,18 @@ def create_user():
 
   return user_schema.jsonify(new_user)
 
-@user.route('/user', methods=['GET'])
+@user.route('/usersG', methods=['GET'])
 def get_users():
   all_users = Usuario.query.all()
   result = users_schema.dump(all_users)
   return jsonify(result)
 
-@user.route('/users/<id>', methods=['GET'])
+@user.route('/userG/<id>', methods=['GET'])
 def get_user(id):
   usu = Usuario.query.get(id)
   return user_schema.jsonify(usu)
 
-@user.route('/user/<id>', methods=['PUT'])
+@user.route('/userU/<id>', methods=['PUT'])
 def update_user(id):
   usu = Usuario.query.get(id)
 
@@ -51,7 +51,7 @@ def update_user(id):
 
   return user_schema.jsonify(usu)
 
-@user.route('/users/<id>', methods=['DELETE'])
+@user.route('/userD/<id>', methods=['DELETE'])
 def delete_user(id):
   usu = Usuario.query.get(id)
   db.session.delete(usu)

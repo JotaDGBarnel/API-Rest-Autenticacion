@@ -3,56 +3,56 @@ from app.aplicacion import db, ma, Rol
 
 role = Blueprint('rol', __name__)
 
-class TaskSchema(ma.Schema):
+class RoleSchema(ma.Schema):
     class Meta:
         fields = ('id', 'nom', 'desc', 'fecha')
 
-task_schema = TaskSchema()
-tasks_schema = TaskSchema(many=True)
+role_schema = RoleSchema()
+roles_schema = RoleSchema(many=True)
 
-@role.route('/tasks', methods=['Post'])
-def create_task():
+@role.route('/roleC', methods=['Post'])
+def create_role():
   nom = request.json['nom']
   desc = request.json['desc']
   fecha = request.json['fecha']
 
-  new_task= Rol(nom, desc, fecha)
+  new_role = Rol(nom, desc, fecha)
 
-  db.session.add(new_task)
+  db.session.add(new_role)
   db.session.commit()
 
-  return task_schema.jsonify(new_task)
+  return role_schema.jsonify(new_role)
 
-@role.route('/tasks', methods=['GET'])
-def get_tasks():
-  all_tasks = Rol.query.all()
-  result = tasks_schema.dump(all_tasks)
+@role.route('/rolesG', methods=['GET'])
+def get_roles():
+  all_roles = Rol.query.all()
+  result = roles_schema.dump(all_roles)
   return jsonify(result)
 
-@role.route('/tasks/<id>', methods=['GET'])
-def get_task(id):
-  task = Rol.query.get(id)
-  return task_schema.jsonify(task)
+@role.route('/rolesG/<id>', methods=['GET'])
+def get_role(id):
+  role = Rol.query.get(id)
+  return role_schema.jsonify(role)
 
-@role.route('/tasks/<id>', methods=['PUT'])
-def update_task(id):
-  task = Rol.query.get(id)
+@role.route('/roleU/<id>', methods=['PUT'])
+def update_role(id):
+  role = Rol.query.get(id)
 
   nom = request.json['nom']
   desc = request.json['desc']
   fecha = request.json['fecha']
 
-  task.nom = nom
-  task.desc = desc
-  task.fecha = fecha
+  role.nom = nom
+  role.desc = desc
+  role.fecha = fecha
 
   db.session.commit()
 
-  return task_schema.jsonify(task)
+  return role_schema.jsonify(role)
 
-@role.route('/tasks/<id>', methods=['DELETE'])
-def delete_task(id):
-  task = Rol.query.get(id)
-  db.session.delete(task)
+@role.route('/roleD/<id>', methods=['DELETE'])
+def delete_role(id):
+  role = Rol.query.get(id)
+  db.session.delete(role)
   db.session.commit()
-  return task_schema.jsonify(task)
+  return role_schema.jsonify(role)

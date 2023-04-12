@@ -3,56 +3,56 @@ from app.aplicacion import db, ma, Permiso
 
 permission = Blueprint('permission', __name__)
 
-class TaskSchema(ma.Schema):
+class PermissionSchema(ma.Schema):
     class Meta:
         fields = ('id', 'nom', 'desc', 'fecha')
 
-task_schema = TaskSchema()
-tasks_schema = TaskSchema(many=True)
+permission_schema = PermissionSchema()
+permissions_schema = PermissionSchema(many=True)
 
-@permission.route('/tasks', methods=['Post'])
-def create_task():
+@permission.route('/permissionC', methods=['Post'])
+def create_permission():
   nom = request.json['nom']
   desc = request.json['desc']
   fecha = request.json['fecha']
 
-  new_task= Permiso(nom, desc, fecha)
+  new_permission = Permiso(nom, desc, fecha)
 
-  db.session.add(new_task)
+  db.session.add(new_permission)
   db.session.commit()
 
-  return task_schema.jsonify(new_task)
+  return permission_schema.jsonify(new_permission)
 
-@permission.route('/tasks', methods=['GET'])
-def get_tasks():
-  all_tasks = Permiso.query.all()
-  result = tasks_schema.dump(all_tasks)
+@permission.route('/permissionsG', methods=['GET'])
+def get_permissions():
+  all_permissions = Permiso.query.all()
+  result = permissions_schema.dump(all_permissions)
   return jsonify(result)
 
-@permission.route('/tasks/<id>', methods=['GET'])
-def get_task(id):
-  task = Permiso.query.get(id)
-  return task_schema.jsonify(task)
+@permission.route('/permissionG/<id>', methods=['GET'])
+def get_permission(id):
+  permission = Permiso.query.get(id)
+  return permission_schema.jsonify(permission)
 
-@permission.route('/tasks/<id>', methods=['PUT'])
-def update_task(id):
-  task = Permiso.query.get(id)
+@permission.route('/permissionU/<id>', methods=['PUT'])
+def update_permission(id):
+  permission = Permiso.query.get(id)
 
   nom = request.json['nom']
   desc = request.json['desc']
   fecha = request.json['fecha']
 
-  task.nom = nom
-  task.desc = desc
-  task.fecha = fecha
+  permission.nom = nom
+  permission.desc = desc
+  permission.fecha = fecha
 
   db.session.commit()
 
-  return task_schema.jsonify(task)
+  return permission_schema.jsonify(permission)
 
-@permission.route('/tasks/<id>', methods=['DELETE'])
-def delete_task(id):
-  task = Permiso.query.get(id)
-  db.session.delete(task)
+@permission.route('/permissionD/<id>', methods=['DELETE'])
+def delete_permission(id):
+  permission = Permiso.query.get(id)
+  db.session.delete(permission)
   db.session.commit()
-  return task_schema.jsonify(task)
+  return permission_schema.jsonify(permission)
