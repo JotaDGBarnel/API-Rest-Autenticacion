@@ -2,6 +2,7 @@ from flask import request, jsonify, Blueprint
 from app.aplicacion import db, ma, Usuario
 from .usuarioDTO import UsuarioDTO, UsuarioDAO
 
+
 class UsuarioDTO:
     def __init__(self, id, nom, con, correo):
         self.id = id
